@@ -27,8 +27,8 @@ namespace CL7Logger.APIExample.Controllers
         [HttpGet]
         public async Task<string> GetAsync(CancellationToken cancellationToken)
         {
-            await logger.LogAsync(LogLevel.Information,"Hola mundo 1!", cancellationToken);
-            await logger.LogAsync(LogLevel.Trace, "Hola mundo trace!", cancellationToken);
+            await logger.LogAsync("Hola mundo 1!");
+            await logger.LogAsync("Hola mundo trace!", LogLevel.Trace);
 
             var rng = new Random();
             var stringtoreturn = await weatherForecast.Setup(Summaries[rng.Next(Summaries.Length)], cancellationToken);
@@ -36,7 +36,7 @@ namespace CL7Logger.APIExample.Controllers
             try
             {
 
-                await logger.LogAsync(LogLevel.Warning, "Dividiremos entre zero!", cancellationToken);
+                await logger.LogAsync("Dividiremos entre zero!", LogLevel.Warning, cancellationToken);
                 throw new DivideByZeroException();
             }
             catch (Exception e)

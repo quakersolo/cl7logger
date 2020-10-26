@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Threading;
 
@@ -35,6 +37,7 @@ namespace CL7Logger.Core
                 CL7LoggerManager loggerManager = ctx.RequestServices.GetService<CL7LoggerManager>();
                 IOptions<LoggerOptions> options = ctx.RequestServices.GetService<IOptions<LoggerOptions>>();
 
+                //If its the first time that you use a connectionString then verify if has the tables created!
                 if (!loggerManager.ConnectionAttempts.Contains(options.Value.ConnectionString))
                 {
                     ILoggerDbContext loggerDbContext = ctx.RequestServices.GetService<ILoggerDbContext>();
@@ -42,6 +45,16 @@ namespace CL7Logger.Core
                     await loggerDbContext.EnsureDatabase(options.Value.ConnectionString, new CancellationToken());
                     loggerManager.ConnectionAttempts.Add(options.Value.ConnectionString);
                 }
+
+                //Try to get TraceId value from HttpRequest Header: CL7TraceId
+                StringValues traceValues;
+                if (ctx.Request.Headers.TryGetValue("CL7TraceId", out traceValues) && traceValues.Count > 0)
+                    options.Value.TraceId = Guid.Parse(traceValues[0]);
+                else
+                    options.Value.TraceId = Guid.NewGuid();
+
+                ICL7Logger logger = ctx.RequestServices.GetService<ICL7Logger>();
+                await logger.LogAsync($"Starting request logging!", LogLevel.Trace);
 
                 await next();
             });

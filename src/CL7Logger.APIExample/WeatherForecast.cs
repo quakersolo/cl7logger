@@ -16,7 +16,7 @@ namespace CL7Logger.APIExample
 
         public async Task<string> Setup(string summary, CancellationToken cancellationToken)
         {
-            await logger.LogAsync(LogLevel.Debug,"Hola mundo debug!", cancellationToken);
+            await logger.LogAsync("Hola mundo debug!", LogLevel.Debug, cancellationToken);
             return summary;
         }
     }

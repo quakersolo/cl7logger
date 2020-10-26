@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CL7Logger.Application\CL7Logger.Application.csproj" />
     <ProjectReference Include="..\CL7Logger.Domain\CL7Logger.Domain.csproj" />
   </ItemGroup>
 

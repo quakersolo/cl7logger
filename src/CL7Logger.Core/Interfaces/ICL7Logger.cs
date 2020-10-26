@@ -7,8 +7,8 @@ namespace CL7Logger.Core.Interfaces
 {
     public interface ICL7Logger
     {
-        Task<Guid> LogAsync(LogLevel logLevel, string message, CancellationToken cancellationToken);
+        Task<Guid> LogAsync(string message, LogLevel logLevel = LogLevel.Information, CancellationToken cancellationToken = default);
 
-        Task<Guid> LogErrorAsync(Exception exception, CancellationToken cancellationToken);
+        Task<Guid> LogErrorAsync(Exception exception, CancellationToken cancellationToken = default);
     }
 }

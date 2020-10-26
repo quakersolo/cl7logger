@@ -17,7 +17,14 @@ namespace CL7Logger.Core
             this.createLogEntryCommand = createLogEntryCommand;
         }
 
-        public async Task<Guid> LogAsync(LogLevel logLevel, string message, CancellationToken cancellationToken)
+        /// <summary>
+        /// Register a LogEntry in the database
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="logLevel">Loglevel is Information by default, you can change it at needed.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>LogEntryId genereated in the database.</returns>
+        public async Task<Guid> LogAsync(string message, LogLevel logLevel = LogLevel.Information, CancellationToken cancellationToken = default)
         {
             createLogEntryCommand.Parameters = new CreateLogEntryParameters
             {
@@ -29,7 +36,13 @@ namespace CL7Logger.Core
             return await createLogEntryCommand.ExecuteAsync(cancellationToken);
         }
 
-        public async Task<Guid> LogErrorAsync(Exception exception, CancellationToken cancellationToken)
+        /// <summary>
+        /// Register a LogEntry in the database by an Error/Exception
+        /// </summary>
+        /// <param name="exception">Exception thrown</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>LogEntryId genereated in the database.</returns>
+        public async Task<Guid> LogErrorAsync(Exception exception, CancellationToken cancellationToken = default)
         {
             createLogEntryCommand.Parameters = new CreateLogEntryParameters
             {

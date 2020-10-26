@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Threading;
 
@@ -32,8 +33,21 @@ namespace CL7Logger.Core
         {
             app.Use(async (ctx, next) =>
             {
+                Guid traceId;
+                StringValues traceIdValues;
                 CL7LoggerManager loggerManager = ctx.RequestServices.GetService<CL7LoggerManager>();
                 IOptions<LoggerOptions> options = ctx.RequestServices.GetService<IOptions<LoggerOptions>>();
+
+                if (ctx.Request.Headers.TryGetValue(options.Value.TraceIdHeaderName, out traceIdValues) &&
+                    traceIdValues.Count > 0 &&
+                    Guid.TryParse(traceIdValues[0], out traceId))
+                {
+                    options.Value.TraceId = traceId;
+                }
+                else
+                {
+                    options.Value.TraceId = Guid.NewGuid();
+                }
 
                 if (!loggerManager.ConnectionAttempts.Contains(options.Value.ConnectionString))
                 {

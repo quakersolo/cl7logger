@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <UserSecretsId>6691cffa-f5a1-4836-9771-f3d1b7dfe60e</UserSecretsId>
+    <Version>1.0.2</Version>
+    <Authors>Carlos D Hernandez</Authors>
+    <Product>CL7Logger</Product>
   </PropertyGroup>
 
   <ItemGroup>

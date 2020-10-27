@@ -5,10 +5,6 @@ VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CL7Logger.Core", "CL7Logger.Core\CL7Logger.Core.csproj", "{A97DC109-F1F4-45BC-9319-0CABB0F0B4E0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Core", "1. Core", "{F8FA1F0C-80F3-4028-8A8F-E1741BAFB9FE}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5. Examples", "5. Examples", "{B3B64E77-E1CE-487F-9338-91D32337FC54}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CL7Logger.APIExample", "CL7Logger.APIExample\CL7Logger.APIExample.csproj", "{7F6CF699-4320-472C-AD30-B89A295A66BF}"
 EndProject
 Global
@@ -28,10 +24,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{A97DC109-F1F4-45BC-9319-0CABB0F0B4E0} = {F8FA1F0C-80F3-4028-8A8F-E1741BAFB9FE}
-		{7F6CF699-4320-472C-AD30-B89A295A66BF} = {B3B64E77-E1CE-487F-9338-91D32337FC54}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8F2CD983-7AB1-4C90-A89F-26BB5F3F8F49}

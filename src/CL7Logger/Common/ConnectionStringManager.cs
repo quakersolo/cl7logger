@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace CL7Logger.Core.Common
+namespace CL7Logger.Common
 {
-    public class CL7LoggerManager
+    internal class ConnectionStringManager
     {
-        public CL7LoggerManager()
+        public ConnectionStringManager()
         {
             ConnectionAttempts = new List<string>();
         }

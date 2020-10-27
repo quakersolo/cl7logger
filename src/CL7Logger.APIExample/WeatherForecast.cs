@@ -1,5 +1,3 @@
-using CL7Logger.Core.Common.Interfaces;
-using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -7,16 +5,16 @@ namespace CL7Logger.APIExample
 {
     public class WeatherForecast
     {
-        private readonly ICL7Logger logger;
+        private readonly ILogManager logManager;
 
-        public WeatherForecast(ICL7Logger logger)
+        public WeatherForecast(ILogManager logManager)
         {
-            this.logger = logger;
+            this.logManager = logManager;
         }
 
         public async Task<string> Setup(string summary, CancellationToken cancellationToken)
         {
-            await logger.LogAsync("Hola mundo debug!", LogLevel.Debug, cancellationToken);
+            await logManager.LogAsync("Hola mundo Trace!", Common.Enums.LogEntryType.Trace, cancellationToken);
             return summary;
         }
     }

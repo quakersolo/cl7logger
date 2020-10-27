@@ -15,11 +15,11 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Install dependencies
-      run:  dotnet restore src/CL7Logger.Core/CL7Logger.Core.csproj
+      run:  dotnet restore src/CL7Logger.Core/CL7Logger.csproj
     - name: Build
-      run: dotnet build --configuration Release --no-restore src/CL7Logger.Core/CL7Logger.Core.csproj
-    - name: Publish CL7Logger.Core
+      run: dotnet build --configuration Release --no-restore src/CL7Logger.Core/CL7Logger.csproj
+    - name: Publish CL7Logger
       uses: brandedoutcast/publish-nuget@v2.5.2
       with:
-          PROJECT_FILE_PATH: src/CL7Logger.Core/CL7Logger.Core.csproj
+          PROJECT_FILE_PATH: src/CL7Logger/CL7Logger.csproj
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}

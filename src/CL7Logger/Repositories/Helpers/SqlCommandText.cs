@@ -24,5 +24,11 @@ BEGIN
 	)
 END";
 
+        public const string LogEntryList = @"
+SELECT TOP 200 Id, ApplicationName, TraceId, LogEntryType, LogEntryTypeName, Message, Detail, Host, UserId, CreatedAt 
+FROM ElmahJolieTest.dbo.LogEntries
+WHERE 
+	(@TraceId = '00000000-0000-0000-0000-000000000000' or TraceId=@TraceId)
+	AND (@LogEntryType = 99 OR LogEntryType = @LogEntryType);";
     }
 }

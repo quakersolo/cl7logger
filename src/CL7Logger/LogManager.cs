@@ -1,8 +1,10 @@
 ﻿using CL7Logger.Common.Enums;
 using CL7Logger.Entities;
 using CL7Logger.Repositories;
+using CL7Logger.Transport;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,7 +20,16 @@ namespace CL7Logger
             this.options = options;
         }
 
-        public async Task<Guid> LogAsync(string message, LogEntryType logEntryType = LogEntryType.Trace, CancellationToken cancellationToken = default)
+        public async Task<ListLogsResult> ListLogsAsync(ListLogsParameters parameters, CancellationToken cancellationToken = default)
+        {
+            LogEntryRepository logEntryRepository = new LogEntryRepository(options.Value.ConnectionString);
+
+            IEnumerable<LogEntry> logEntries = await logEntryRepository.ListAsync(ListLogsParameters.ToDictionary(parameters), cancellationToken);
+
+            return ListLogsResult.FromLogEntries(logEntries);
+        }
+
+        public async Task<Guid> AddLogAsync(string message, LogEntryType logEntryType = LogEntryType.Trace, CancellationToken cancellationToken = default)
         {
             LogEntry logEntry = new LogEntry
             {
@@ -36,12 +47,12 @@ namespace CL7Logger
             return await logEntryRepository.AddAsync(logEntry, cancellationToken);
         }
 
-        public async Task<Guid> LogAsync(string message, CancellationToken cancellationToken)
+        public async Task<Guid> AddLogAsync(string message, CancellationToken cancellationToken)
         {
-            return await LogAsync(message, LogEntryType.Trace, cancellationToken);
+            return await AddLogAsync(message, LogEntryType.Trace, cancellationToken);
         }
 
-        public async Task<Guid> LogErrorAsync(Exception exception, CancellationToken cancellationToken = default)
+        public async Task<Guid> AddLogErrorAsync(Exception exception, CancellationToken cancellationToken = default)
         {
             LogEntry logEntry = new LogEntry
             {

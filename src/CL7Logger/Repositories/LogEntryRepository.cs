@@ -1,6 +1,9 @@
-﻿using CL7Logger.Entities;
+﻿using CL7Logger.Common.Enums;
+using CL7Logger.Entities;
 using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -35,6 +38,46 @@ namespace CL7Logger.Repositories
 
                 return entityId;
             }
+        }
+
+        public override async Task<IEnumerable<LogEntry>> ListAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken)
+        {
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand(Helpers.SqlCommandText.LogEntryList, conn);
+
+                parameters.Keys.ToList().ForEach(key =>
+                {
+                    cmd.Parameters.AddWithValue(key, parameters[key]);
+                });
+
+                await conn.OpenAsync(cancellationToken);
+                SqlDataReader reader = await cmd.ExecuteReaderAsync(cancellationToken);
+
+                List<LogEntry> logEntries = new List<LogEntry>();
+                while (await reader.ReadAsync(cancellationToken))
+                {
+                    logEntries.Add(FromSqlDataReaderToLogEntry(reader));
+                }
+
+                return logEntries;
+            }
+        }
+
+        private LogEntry FromSqlDataReaderToLogEntry(SqlDataReader reader)
+        {
+            return new LogEntry
+            {
+                Id = reader.GetGuid(reader.GetOrdinal("Id")),
+                ApplicationName = reader.GetString(reader.GetOrdinal("ApplicationName")),
+                TraceId = reader.GetGuid(reader.GetOrdinal("TraceId")),
+                LogEntryType = (LogEntryType)reader.GetInt32(reader.GetOrdinal("LogEntryType")),
+                Message = reader.GetString(reader.GetOrdinal("Message")),
+                Detail = reader.GetString(reader.GetOrdinal("Detail")),
+                Host = reader.GetString(reader.GetOrdinal("Host")),
+                UserId = reader.GetString(reader.GetOrdinal("UserId")),
+                CreatedAt = reader.GetDateTime(reader.GetOrdinal("CreatedAt")),
+            };
         }
     }
 }

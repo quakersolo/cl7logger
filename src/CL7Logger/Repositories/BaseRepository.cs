@@ -1,5 +1,6 @@
 ﻿using CL7Logger.Entities;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,5 +16,6 @@ namespace CL7Logger.Repositories
         }
 
         public abstract Task<Guid> AddAsync(T entity, CancellationToken cancellationToken = default);
+        public abstract Task<IEnumerable<T>> ListAsync(IDictionary<string, object> parameters, CancellationToken cancellationToken);
     }
 }

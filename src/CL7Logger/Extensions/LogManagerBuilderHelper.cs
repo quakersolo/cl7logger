@@ -42,7 +42,7 @@ namespace CL7Logger.Extensions
                     options.Value.TraceId = Guid.NewGuid();
 
                 ILogManager logger = ctx.RequestServices.GetService<ILogManager>();
-                await logger.LogAsync($"Starting request logging!", LogEntryType.Trace);
+                await logger.AddLogAsync($"Starting request logging!", LogEntryType.Trace);
 
                 await next();
             });

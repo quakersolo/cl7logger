@@ -14,7 +14,7 @@ namespace CL7Logger.APIExample
 
         public async Task<string> Setup(string summary, CancellationToken cancellationToken)
         {
-            await logManager.LogAsync("Hola mundo Trace!", Common.Enums.LogEntryType.Trace, cancellationToken);
+            await logManager.AddLogAsync("Hola mundo Trace!", Common.Enums.LogEntryType.Trace, cancellationToken);
             return summary;
         }
     }

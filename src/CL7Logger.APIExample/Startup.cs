@@ -1,4 +1,5 @@
 using CL7Logger.Core;
+using CL7Logger.Core.Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

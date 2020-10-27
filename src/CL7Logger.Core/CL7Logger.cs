@@ -1,5 +1,5 @@
 ﻿using CL7Logger.Application.CQRS.Commands.CreateLogEntry;
-using CL7Logger.Core.Interfaces;
+using CL7Logger.Core.Common.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Text.Json;

@@ -1,6 +1,6 @@
 ﻿using CL7Logger.Application;
 using CL7Logger.Application.Interfaces;
-using CL7Logger.Core.Interfaces;
+using CL7Logger.Core.Common.Interfaces;
 using CL7Logger.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -12,7 +12,7 @@ using Microsoft.Extensions.Primitives;
 using System;
 using System.Threading;
 
-namespace CL7Logger.Core
+namespace CL7Logger.Core.Common
 {
     public static class CL7LoggerExtensions
     {

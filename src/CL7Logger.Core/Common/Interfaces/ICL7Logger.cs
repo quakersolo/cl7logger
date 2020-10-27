@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CL7Logger.Core.Interfaces
+namespace CL7Logger.Core.Common.Interfaces
 {
     public interface ICL7Logger
     {

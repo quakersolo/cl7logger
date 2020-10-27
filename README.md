@@ -1,6 +1,6 @@
 # Setting up
 
-##Configure services
+## Configure services
 ```
 public void ConfigureServices(IServiceCollection services)
 {
@@ -17,7 +17,7 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-##Configure
+## Configure
 ```
 public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 {

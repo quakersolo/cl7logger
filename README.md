@@ -4,9 +4,7 @@
 ```
 public void ConfigureServices(IServiceCollection services)
 {
-    services.AddControllers();
-
-    services.AddTransient<WeatherForecast>();
+    ...
 
     //Services used are scoped in order to allow you to change it at runtime if needed
     services.AddCL7Logger(options =>
@@ -14,6 +12,8 @@ public void ConfigureServices(IServiceCollection services)
         options.ApplicationName = Configuration["YourApplicationName"];
         options.ConnectionString = Configuration["ConnectionString"];
     });
+    
+    ...
 }
 ```
 
@@ -22,7 +22,9 @@ public void ConfigureServices(IServiceCollection services)
 public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 {
     ...
+    
     app.UseCL7Logger();
+    
     ...
 }
 ```

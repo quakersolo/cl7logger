@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>222603b3-1ade-47fc-8591-6434b1411dbf</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CL7Logger.Core\CL7Logger.Core.csproj" />
+  </ItemGroup>
+
+
+</Project>

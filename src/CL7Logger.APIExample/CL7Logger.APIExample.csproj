@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CL7Logger.Core\CL7Logger.Core.csproj" />
+    <ProjectReference Include="..\CL7Logger\CL7Logger.csproj" />
   </ItemGroup>
 
 

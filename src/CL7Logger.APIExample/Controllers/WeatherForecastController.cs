@@ -1,6 +1,5 @@
-﻿using CL7Logger.Core.Common.Interfaces;
+﻿using CL7Logger.Transport;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,10 +14,10 @@ namespace CL7Logger.APIExample.Controllers
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
-        private readonly ICL7Logger logger;
+        private readonly ILogManager logger;
         private readonly WeatherForecast weatherForecast;
 
-        public WeatherForecastController(ICL7Logger logger, WeatherForecast weatherForecast)
+        public WeatherForecastController(ILogManager logger, WeatherForecast weatherForecast)
         {
             this.logger = logger;
             this.weatherForecast = weatherForecast;
@@ -27,8 +26,8 @@ namespace CL7Logger.APIExample.Controllers
         [HttpGet]
         public async Task<string> GetAsync(CancellationToken cancellationToken)
         {
-            await logger.LogAsync("Hola mundo 1!");
-            await logger.LogAsync("Hola mundo trace!", LogLevel.Trace);
+            await logger.AddLogAsync("Hola mundo 1!");
+            await logger.AddLogAsync("Hola mundo trace!", Common.Enums.LogEntryType.Trace);
 
             var rng = new Random();
             var stringtoreturn = await weatherForecast.Setup(Summaries[rng.Next(Summaries.Length)], cancellationToken);
@@ -36,13 +35,19 @@ namespace CL7Logger.APIExample.Controllers
             try
             {
 
-                await logger.LogAsync("Dividiremos entre zero!", LogLevel.Warning, cancellationToken);
+                await logger.AddLogAsync("Dividiremos entre zero!", Common.Enums.LogEntryType.Information, cancellationToken);
                 throw new DivideByZeroException();
             }
             catch (Exception e)
             {
-                await logger.LogErrorAsync(e, cancellationToken);
+                await logger.AddLogErrorAsync(e, cancellationToken);
             }
+
+            var res = await logger.ListLogsAsync(new ListLogsParameters
+            {
+                LogEntryType = Common.Enums.LogEntryType.Trace,
+                TraceId = new Guid("0d348b5d-7fb6-43ae-9daf-58213358c39a")
+            });
 
             return stringtoreturn;
         }

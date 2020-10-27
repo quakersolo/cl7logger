@@ -1,4 +1,4 @@
-using CL7Logger.Core.Interfaces;
+using CL7Logger.Core.Common.Interfaces;
 using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;

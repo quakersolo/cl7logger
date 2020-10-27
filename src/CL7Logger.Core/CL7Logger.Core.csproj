@@ -3,9 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <UserSecretsId>6691cffa-f5a1-4836-9771-f3d1b7dfe60e</UserSecretsId>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <Authors>Carlos D Hernandez</Authors>
     <Product>CL7Logger</Product>
+    <Description>Logger extension for Net applications with MSSQL database. 
+PostgreSQL support will be added in the upcomming releases.
+
+For using examples visit https://github.com/quakersolo/cl7logger</Description>
   </PropertyGroup>
 
   <ItemGroup>

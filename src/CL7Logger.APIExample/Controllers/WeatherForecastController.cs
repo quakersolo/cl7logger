@@ -1,4 +1,4 @@
-﻿using CL7Logger.Core.Interfaces;
+﻿using CL7Logger.Core.Common.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;

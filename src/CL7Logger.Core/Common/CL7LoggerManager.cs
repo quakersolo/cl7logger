@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CL7Logger.Core
+namespace CL7Logger.Core.Common
 {
     public class CL7LoggerManager
     {

@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <Version>1.0.5</Version>
+    <Authors>Carlos D Hernandez</Authors>
+    <Company>Carlos D Hernandez</Company>
   </PropertyGroup>
 
   <ItemGroup>

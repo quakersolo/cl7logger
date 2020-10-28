@@ -29,6 +29,6 @@ SELECT TOP 200 Id, ApplicationName, TraceId, LogEntryType, LogEntryTypeName, Mes
 FROM ElmahJolieTest.dbo.LogEntries
 WHERE 
 	(@TraceId = '00000000-0000-0000-0000-000000000000' or TraceId=@TraceId)
-	AND (@LogEntryType = 99 OR LogEntryType = @LogEntryType);";
+	AND (@LogEntryType = -99 OR LogEntryType = @LogEntryType);";
     }
 }

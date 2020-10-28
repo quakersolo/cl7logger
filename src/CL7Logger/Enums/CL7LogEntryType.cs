@@ -1,11 +1,11 @@
-﻿namespace CL7Logger.Common.Enums
+﻿namespace CL7Logger
 {
-    public enum LogEntryType
+    public enum CL7LogEntryType
     {
         Trace = 0,
         Information,
         Warning,
         Error,
-        All = 99
+        All = -99
     }
 }

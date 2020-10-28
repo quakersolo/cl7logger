@@ -5,16 +5,16 @@ namespace CL7Logger.APIExample
 {
     public class WeatherForecast
     {
-        private readonly ILogManager logManager;
+        private readonly ICL7LogManager logManager;
 
-        public WeatherForecast(ILogManager logManager)
+        public WeatherForecast(ICL7LogManager logManager)
         {
             this.logManager = logManager;
         }
 
         public async Task<string> Setup(string summary, CancellationToken cancellationToken)
         {
-            await logManager.AddLogAsync("Hola mundo Trace!", Common.Enums.LogEntryType.Trace, cancellationToken);
+            await logManager.AddTraceAsync("Setup: AddTraceAsync X?!", cancellationToken);
             return summary;
         }
     }

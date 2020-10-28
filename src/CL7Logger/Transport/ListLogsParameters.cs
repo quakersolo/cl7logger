@@ -1,5 +1,4 @@
-﻿using CL7Logger.Common.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace CL7Logger.Transport
@@ -7,7 +6,7 @@ namespace CL7Logger.Transport
     public class ListLogsParameters
     {
         public Guid TraceId { get; set; } = default;
-        public LogEntryType LogEntryType { get; set; } = LogEntryType.All;
+        public CL7LogEntryType LogEntryType { get; set; } = CL7LogEntryType.All;
 
         internal static IDictionary<string, object> ToDictionary(ListLogsParameters parameters)
         {

@@ -2,7 +2,7 @@
 
 namespace CL7Logger
 {
-    public class LogManagerOptions
+    public class CL7LogOptions
     {
         public string ApplicationName { get; set; }
         public string ConnectionString { get; set; }

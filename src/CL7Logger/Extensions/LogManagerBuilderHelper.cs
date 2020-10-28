@@ -1,5 +1,4 @@
 ﻿using CL7Logger.Common;
-using CL7Logger.Common.Enums;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -10,11 +9,11 @@ namespace CL7Logger.Extensions
 {
     public static class LogManagerBuilderHelper
     {
-        public static IServiceCollection AddCL7Logger(this IServiceCollection services, Action<LogManagerOptions> setupAction)
+        public static IServiceCollection AddCL7Logger(this IServiceCollection services, Action<CL7LogOptions> setupAction)
         {
             var builder = services.AddSingleton<ConnectionStringManager>();
 
-            builder.AddScoped<ILogManager, LogManager>();
+            builder.AddScoped<ICL7LogManager, CL7LogManager>();
             builder.Configure(setupAction);
 
             return builder;
@@ -25,7 +24,7 @@ namespace CL7Logger.Extensions
             app.Use(async (ctx, next) =>
             {
                 ConnectionStringManager connectionStringManager = ctx.RequestServices.GetService<ConnectionStringManager>();
-                IOptions<LogManagerOptions> options = ctx.RequestServices.GetService<IOptions<LogManagerOptions>>();
+                IOptions<CL7LogOptions> options = ctx.RequestServices.GetService<IOptions<CL7LogOptions>>();
 
                 //If its the first time that you use a connectionString then verify if has the tables created!
                 if (!connectionStringManager.ConnectionAttempts.Contains(options.Value.ConnectionString))

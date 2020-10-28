@@ -34,15 +34,12 @@ namespace CL7Logger.Extensions
                     connectionStringManager.ConnectionAttempts.Add(options.Value.ConnectionString);
                 }
 
-                //Try to get TraceId value from HttpRequest Header: CL7TraceId
+                //Try to get TraceId value from HttpRequest Header
                 StringValues traceValues;
-                if (ctx.Request.Headers.TryGetValue("CL7TraceId", out traceValues) && traceValues.Count > 0)
+                if (ctx.Request.Headers.TryGetValue(options.Value.TraceIdHeaderName, out traceValues) && traceValues.Count > 0)
                     options.Value.TraceId = Guid.Parse(traceValues[0]);
                 else
                     options.Value.TraceId = Guid.NewGuid();
-
-                ILogManager logger = ctx.RequestServices.GetService<ILogManager>();
-                await logger.AddLogAsync($"Starting request logging!", LogEntryType.Trace);
 
                 await next();
             });

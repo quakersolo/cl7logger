@@ -2,10 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Version>1.0.5</Version>
+    <Version>1.0.6</Version>
     <Authors>Carlos D Hernandez</Authors>
     <Company>Carlos D Hernandez</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>Logger helper with database creation, logging types, traceId, application &amp; connection string changeable at runtime.</Description>
   </PropertyGroup>
 
   <ItemGroup>

@@ -4,6 +4,7 @@
     {
         Trace = 0,
         Information,
+        Warning,
         Error,
         All = 99
     }

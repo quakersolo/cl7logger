@@ -1,6 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CL7Logger.Transport;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace CL7Logger.Middleware
 {
@@ -13,20 +18,61 @@ namespace CL7Logger.Middleware
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext httpContext)
+        public async Task InvokeAsync(HttpContext httpContext, IOptions<CL7LogOptions> options, ICL7LogManager logManager)
         {
-            //if (httpContext.Request.Path.HasValue && httpContext.Request.Path.Value == ElmahConstants.Path)
-            //{
-            //    string logConnectionString = await tenantManager.GetLogConnectionStringByUrl(currentUser.Host, new CancellationToken());
-            //    //((ElmahLogger)elmahLogger).Configure(logConnectionString, httpContext);
-            //}
+            if (httpContext.Request.Path.HasValue &&
+                httpContext.Request.Path.Value.ToUpper().StartsWith(options.Value.Path.ToUpper()))
+            {
+                IQueryCollection queryCollection = httpContext.Request.Query;
 
-            //if (httpContext.Request.Path.HasValue && httpContext.Request.Path.Value == ElmahConstants.Stylesheet)
-            //{
-            //    httpContext.Response.Redirect(ElmahConstants.CssMin);
-            //}
-            //else
+                ListLogsParameters listLogsParameters = new ListLogsParameters
+                {
+                    LogEntryType = CL7LogEntryType.All
+                };
+
+                ListLogsResult listLogsResult = await logManager.ListLogsAsync(listLogsParameters);
+
+                string html = string.Format(@"
+<html>
+    <head>
+        <link rel=""stylesheet"" href=""https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"" integrity=""sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"" crossorigin=""anonymous"">
+    </head>
+    <body>
+        <table class=""table table-sm"">
+            <thead>
+                <tr>
+                    <th scope=""col"">Id</th>
+                    <th scope=""col"">TraceId</th>
+                    <th scope=""col"">Type</th>
+                    <th scope=""col"">Message</th>
+                    <th scope=""col"">User@Host</th>
+                </tr>
+            </thead>
+            <tbody>
+                {0}
+            </tbody>
+        </table>
+    </body>
+</html>
+", string.Join(Environment.NewLine,
+listLogsResult.Items.Select(item => $"<tr class=\"{GetCssLogEntry(item.LogEntryType)}\"><th scope=\"row\"><a href=\"#\">{item.Id}</a></th><td>{item.TraceId}</td><td>{item.LogEntryType}</td><td>{item.Message}</td><td>{item.UserId}@{item.Host}</td></tr>")));
+
+                await httpContext.Response.WriteAsync(html);
+                return;
+            }
+
             await _next(httpContext);
+        }
+
+        private string GetCssLogEntry(CL7LogEntryType cL7LogEntryType)
+        {
+            switch (cL7LogEntryType)
+            {
+                case CL7LogEntryType.Error:
+                    return "table-danger";
+                default:
+                    return string.Empty;
+            }
         }
     }
 

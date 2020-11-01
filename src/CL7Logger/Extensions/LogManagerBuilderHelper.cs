@@ -1,4 +1,5 @@
 ﻿using CL7Logger.Common;
+using CL7Logger.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -21,6 +22,8 @@ namespace CL7Logger.Extensions
 
         public static IApplicationBuilder UseCL7Logger(this IApplicationBuilder app)
         {
+            app.UseMiddleware<CL7LogMiddleware>();
+
             app.Use(async (ctx, next) =>
             {
                 ConnectionStringManager connectionStringManager = ctx.RequestServices.GetService<ConnectionStringManager>();

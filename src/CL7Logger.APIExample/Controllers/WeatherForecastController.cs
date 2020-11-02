@@ -34,7 +34,6 @@ namespace CL7Logger.APIExample.Controllers
 
             try
             {
-
                 await logger.AddWarningAsync("Dividiremos entre zero!", cancellationToken);
                 throw new DivideByZeroException();
             }

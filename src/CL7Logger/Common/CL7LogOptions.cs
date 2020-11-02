@@ -8,9 +8,7 @@ namespace CL7Logger
         public string ConnectionString { get; set; }
         public Guid TraceId { get; set; }
 
-        /// <summary>
-        /// Name of the TraceId parameter in the RequestHeader collection. Default value: CL7TraceId
-        /// </summary>
         public string TraceIdHeaderName { get; set; } = "CL7TraceId";
+        public string Path { get; set; } = "/Logentries";
     }
 }

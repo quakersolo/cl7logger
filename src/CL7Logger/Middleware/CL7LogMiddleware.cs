@@ -25,10 +25,27 @@ namespace CL7Logger.Middleware
             {
                 IQueryCollection queryCollection = httpContext.Request.Query;
 
-                ListLogsParameters listLogsParameters = new ListLogsParameters
+                ListLogsParameters listLogsParameters = new ListLogsParameters();
+
+                Guid logEntryId;
+                if (queryCollection.ContainsKey("id") && Guid.TryParse(queryCollection["id"], out logEntryId))
                 {
-                    LogEntryType = CL7LogEntryType.All
-                };
+                    listLogsParameters.LogEntryId = logEntryId;
+                }
+
+                Guid traceId;
+                if (queryCollection.ContainsKey("tid") && Guid.TryParse(queryCollection["tid"], out traceId))
+                {
+                    listLogsParameters.TraceId = traceId;
+                }
+
+                int logEntryType;
+                if (queryCollection.ContainsKey("ty") &&
+                    int.TryParse(queryCollection["ty"], out logEntryType) &&
+                    Enum.IsDefined(typeof(CL7LogEntryType), logEntryType))
+                {
+                    listLogsParameters.LogEntryType = (CL7LogEntryType)logEntryType;
+                }
 
                 ListLogsResult listLogsResult = await logManager.ListLogsAsync(listLogsParameters);
 
@@ -45,6 +62,7 @@ namespace CL7Logger.Middleware
                     <th scope=""col"">TraceId</th>
                     <th scope=""col"">Type</th>
                     <th scope=""col"">Message</th>
+                    <th scope=""col"">Created at</th>
                     <th scope=""col"">User@Host</th>
                 </tr>
             </thead>
@@ -55,7 +73,7 @@ namespace CL7Logger.Middleware
     </body>
 </html>
 ", string.Join(Environment.NewLine,
-listLogsResult.Items.Select(item => $"<tr class=\"{GetCssLogEntry(item.LogEntryType)}\"><th scope=\"row\"><a href=\"#\">{item.Id}</a></th><td>{item.TraceId}</td><td>{item.LogEntryType}</td><td>{item.Message}</td><td>{item.UserId}@{item.Host}</td></tr>")));
+listLogsResult.Items.OrderByDescending(o => o.CreatedAt).Select(item => $"<tr class=\"{GetCssLogEntry(item.LogEntryType)}\"><th scope=\"row\"><a href=\"#\">{item.Id}</a></th><td>{item.TraceId}</td><td>{item.LogEntryType}</td><td>{item.Message}</td><td>{item.CreatedAt:MM/dd/yyyy HH:mm:ss}</td><td>{item.UserId}@{item.Host}</td></tr>")));
 
                 await httpContext.Response.WriteAsync(html);
                 return;
@@ -68,6 +86,10 @@ listLogsResult.Items.Select(item => $"<tr class=\"{GetCssLogEntry(item.LogEntryT
         {
             switch (cL7LogEntryType)
             {
+                case CL7LogEntryType.Information:
+                    return "table-info";
+                case CL7LogEntryType.Warning:
+                    return "table-warning";
                 case CL7LogEntryType.Error:
                     return "table-danger";
                 default:

@@ -26,7 +26,7 @@ END";
 
         public const string LogEntryList = @"
 SELECT TOP 200 Id, ApplicationName, TraceId, LogEntryType, LogEntryTypeName, Message, Detail, Host, UserId, CreatedAt 
-FROM ElmahJolieTest.dbo.LogEntries
+FROM LogEntries
 WHERE 
 	(@LogEntryId = '00000000-0000-0000-0000-000000000000' or Id=@LogEntryId)
 	AND (@TraceId = '00000000-0000-0000-0000-000000000000' or TraceId=@TraceId)

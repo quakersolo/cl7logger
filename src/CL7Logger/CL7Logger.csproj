@@ -2,16 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Version>1.0.9</Version>
+    <Version>1.1.0</Version>
     <Authors>Carlos D Hernandez</Authors>
     <Company>Carlos D Hernandez</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>Logger helper with database creation, logging types, traceId, application &amp; connection string changeable at runtime.
 
+/logentries (default, you can change it by options) to see a complete list of log entries
+
 https://github.com/quakersolo/cl7logger</Description>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.9" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.9" />

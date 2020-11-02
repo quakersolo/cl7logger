@@ -14,6 +14,7 @@ namespace CL7Logger.Extensions
         {
             var builder = services.AddSingleton<ConnectionStringManager>();
 
+            builder.AddHttpContextAccessor();
             builder.AddScoped<ICL7LogManager, CL7LogManager>();
             builder.Configure(setupAction);
 

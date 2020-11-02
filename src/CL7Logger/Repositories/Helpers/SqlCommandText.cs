@@ -28,7 +28,8 @@ END";
 SELECT TOP 200 Id, ApplicationName, TraceId, LogEntryType, LogEntryTypeName, Message, Detail, Host, UserId, CreatedAt 
 FROM LogEntries
 WHERE 
-	(@LogEntryId = '00000000-0000-0000-0000-000000000000' or Id=@LogEntryId)
+	(ApplicationName = @ApplicationName)
+	AND (@LogEntryId = '00000000-0000-0000-0000-000000000000' or Id=@LogEntryId)
 	AND (@TraceId = '00000000-0000-0000-0000-000000000000' or TraceId=@TraceId)
 	AND (@LogEntryType = -99 OR LogEntryType = @LogEntryType);";
     }

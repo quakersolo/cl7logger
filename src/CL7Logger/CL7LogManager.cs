@@ -1,6 +1,7 @@
 ﻿using CL7Logger.Entities;
 using CL7Logger.Repositories;
 using CL7Logger.Transport;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,12 @@ namespace CL7Logger
     public class CL7LogManager : ICL7LogManager
     {
         private readonly IOptions<CL7LogOptions> options;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public CL7LogManager(IOptions<CL7LogOptions> options)
+        public CL7LogManager(IOptions<CL7LogOptions> options, IHttpContextAccessor httpContextAccessor)
         {
             this.options = options;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public Task<Guid> AddTraceAsync(string message, CancellationToken cancellationToken = default)
@@ -47,8 +50,8 @@ namespace CL7Logger
                     Type = exception.GetType().Name,
                     exception.StackTrace
                 }),
-                Host = string.Empty,
-                UserId = string.Empty,
+                Host = httpContextAccessor.HttpContext?.Request.Host.Host ?? string.Empty,
+                UserId = httpContextAccessor.HttpContext?.User.Identity.Name ?? string.Empty,
                 CreatedAt = DateTime.UtcNow,
             };
 
@@ -60,7 +63,7 @@ namespace CL7Logger
         {
             LogEntryRepository logEntryRepository = new LogEntryRepository(options.Value.ConnectionString);
 
-            IEnumerable<LogEntry> logEntries = await logEntryRepository.ListAsync(ListLogsParameters.ToDictionary(parameters), cancellationToken);
+            IEnumerable<LogEntry> logEntries = await logEntryRepository.ListAsync(ListLogsParameters.ToDictionary(parameters, options.Value.ApplicationName), cancellationToken);
 
             return ListLogsResult.FromLogEntries(logEntries);
         }
@@ -73,9 +76,9 @@ namespace CL7Logger
                 TraceId = options.Value.TraceId,
                 LogEntryType = logEntryType,
                 Message = message,
-                Detail = "{}",
-                Host = string.Empty,
-                UserId = string.Empty,
+                Detail = JsonSerializer.Serialize(new { }),
+                Host = httpContextAccessor.HttpContext?.Request.Host.Host ?? string.Empty,
+                UserId = httpContextAccessor.HttpContext?.User.Identity.Name ?? string.Empty,
                 CreatedAt = DateTime.UtcNow,
             };
 

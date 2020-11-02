@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Text.Json.Serialization;
+using CL7Logger.Middleware.Helpers;
 
 namespace CL7Logger.Middleware
 {
@@ -49,31 +50,11 @@ namespace CL7Logger.Middleware
 
                 ListLogsResult listLogsResult = await logManager.ListLogsAsync(listLogsParameters);
 
-                string html = string.Format(@"
-<html>
-    <head>
-        <link rel=""stylesheet"" href=""https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"" integrity=""sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"" crossorigin=""anonymous"">
-    </head>
-    <body>
-        <table class=""table table-sm"">
-            <thead>
-                <tr>
-                    <th scope=""col"">Id</th>
-                    <th scope=""col"">TraceId</th>
-                    <th scope=""col"">Type</th>
-                    <th scope=""col"">Message</th>
-                    <th scope=""col"">Created at</th>
-                    <th scope=""col"">User@Host</th>
-                </tr>
-            </thead>
-            <tbody>
-                {0}
-            </tbody>
-        </table>
-    </body>
-</html>
-", string.Join(Environment.NewLine,
-listLogsResult.Items.OrderByDescending(o => o.CreatedAt).Select(item => $"<tr class=\"{GetCssLogEntry(item.LogEntryType)}\"><th scope=\"row\"><a href=\"#\">{item.Id}</a></th><td>{item.TraceId}</td><td>{item.LogEntryType}</td><td>{item.Message}</td><td>{item.CreatedAt:MM/dd/yyyy HH:mm:ss}</td><td>{item.UserId}@{item.Host}</td></tr>")));
+                string html = string.Format(HTMLHelper.LogHTMLTable,
+                    htmlTableRows(listLogsResult, options),
+                    options.Value.ApplicationName,
+                    options.Value.Path,
+                    DateTime.UtcNow.ToString("MM/dd/yyyy HH:mm:ss"));
 
                 await httpContext.Response.WriteAsync(html);
                 return;
@@ -82,7 +63,27 @@ listLogsResult.Items.OrderByDescending(o => o.CreatedAt).Select(item => $"<tr cl
             await _next(httpContext);
         }
 
-        private string GetCssLogEntry(CL7LogEntryType cL7LogEntryType)
+        private string htmlTableRows(ListLogsResult listLogsResult, IOptions<CL7LogOptions> options)
+        {
+            return string.Join(
+                        Environment.NewLine,
+                        listLogsResult.Items.OrderByDescending(o => o.CreatedAt).
+                        Select(item => string.Format(
+                            HTMLHelper.LogHTMLRow,
+                            getCssLogEntry(item.LogEntryType),
+                            item.Id,
+                            item.TraceId,
+                            item.LogEntryType,
+                            item.Message,
+                            item.CreatedAt.ToString("MM/dd/yyyy HH:mm:ss"),
+                            item.UserId,
+                            item.Host,
+                            options.Value.Path + "?id=" + item.Id,
+                            options.Value.Path + "?tid=" + item.TraceId
+                        )));
+        }
+
+        private string getCssLogEntry(CL7LogEntryType cL7LogEntryType)
         {
             switch (cL7LogEntryType)
             {

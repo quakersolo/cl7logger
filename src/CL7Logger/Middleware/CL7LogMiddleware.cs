@@ -1,12 +1,13 @@
-﻿using CL7Logger.Transport;
+﻿using CL7Logger.Common;
+using CL7Logger.Middleware.Helpers;
+using CL7Logger.Transport;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Text.Json.Serialization;
-using CL7Logger.Middleware.Helpers;
 
 namespace CL7Logger.Middleware
 {
@@ -19,7 +20,7 @@ namespace CL7Logger.Middleware
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext httpContext, IOptions<CL7LogOptions> options, ICL7LogManager logManager)
+        public async Task InvokeAsync(HttpContext httpContext, IOptions<CL7LogOptions> options, ICL7LogManager logManager, ConnectionStringManager connectionStringManager)
         {
             if (httpContext.Request.Path.HasValue &&
                 httpContext.Request.Path.Value.ToUpper().StartsWith(options.Value.Path.ToUpper()))
@@ -59,6 +60,20 @@ namespace CL7Logger.Middleware
                 await httpContext.Response.WriteAsync(html);
                 return;
             }
+
+            //If its the first time that you use a connectionString then verify if has the tables created!
+            if (!connectionStringManager.ConnectionAttempts.Contains(options.Value.ConnectionString))
+            {
+                await DatabaseManager.CreateTableIfNotExists(options.Value.ConnectionString);
+                connectionStringManager.ConnectionAttempts.Add(options.Value.ConnectionString);
+            }
+
+            //Try to get TraceId value from HttpRequest Header
+            StringValues traceValues;
+            if (httpContext.Request.Headers.TryGetValue(options.Value.TraceIdHeaderName, out traceValues) && traceValues.Count > 0)
+                options.Value.TraceId = Guid.Parse(traceValues[0]);
+            else
+                options.Value.TraceId = Guid.NewGuid();
 
             await _next(httpContext);
         }

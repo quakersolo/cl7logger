@@ -9,7 +9,7 @@ public void ConfigureServices(IServiceCollection services)
     //Services used are scoped in order to allow you to change it at runtime if needed
     services.AddCL7Logger(options =>
     {
-        options.ApplicationName = Configuration["YourApplicationName"];
+        options.LogginInfo.ApplicationName = Configuration["YourApplicationName"];
         options.ConnectionString = Configuration["ConnectionString"];
     });
     

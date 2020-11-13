@@ -41,8 +41,8 @@ namespace CL7Logger
         {
             LogEntry logEntry = new LogEntry
             {
-                ApplicationName = options.Value.ApplicationName,
-                TraceId = options.Value.TraceId,
+                ApplicationName = options.Value.LogginInfo.ApplicationName,
+                TraceId = options.Value.LogginInfo.TraceId,
                 LogEntryType = CL7LogEntryType.Error,
                 Message = exception.Message,
                 Detail = JsonSerializer.Serialize(new
@@ -63,7 +63,7 @@ namespace CL7Logger
         {
             LogEntryRepository logEntryRepository = new LogEntryRepository(options.Value.ConnectionString);
 
-            IEnumerable<LogEntry> logEntries = await logEntryRepository.ListAsync(ListLogsParameters.ToDictionary(parameters, options.Value.ApplicationName), cancellationToken);
+            IEnumerable<LogEntry> logEntries = await logEntryRepository.ListAsync(ListLogsParameters.ToDictionary(parameters, options.Value.LogginInfo.ApplicationName), cancellationToken);
 
             return ListLogsResult.FromLogEntries(logEntries);
         }
@@ -72,8 +72,8 @@ namespace CL7Logger
         {
             LogEntry logEntry = new LogEntry
             {
-                ApplicationName = options.Value.ApplicationName,
-                TraceId = options.Value.TraceId,
+                ApplicationName = options.Value.LogginInfo.ApplicationName,
+                TraceId = options.Value.LogginInfo.TraceId,
                 LogEntryType = logEntryType,
                 Message = message,
                 Detail = JsonSerializer.Serialize(new { }),

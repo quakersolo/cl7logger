@@ -21,7 +21,7 @@
                     <th scope=""col"">TraceId</th>
                     <th scope=""col"">Type</th>
                     <th scope=""col"">Message</th>
-                    <th scope=""col"">Created at</th>
+                    <th scope=""col"">Created at (UTC)</th>
                     <th scope=""col"">User@Host</th>
                 </tr>
             </thead>

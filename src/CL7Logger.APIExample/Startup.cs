@@ -25,7 +25,7 @@ namespace CL7Logger.APIExample
 
             services.AddCL7Logger(options =>
             {
-                options.ApplicationName = "PatientPortalWorker";
+                options.LogginInfo.ApplicationName = "PatientPortalWorker";
                 options.ConnectionString = Configuration["ConnectionString"];
             });
         }

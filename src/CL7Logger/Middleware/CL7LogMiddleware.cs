@@ -53,7 +53,7 @@ namespace CL7Logger.Middleware
 
                 string html = string.Format(HTMLHelper.LogHTMLTable,
                     htmlTableRows(listLogsResult, options),
-                    options.Value.ApplicationName,
+                    options.Value.LogginInfo.ApplicationName,
                     options.Value.Path,
                     DateTime.UtcNow.ToString("MM/dd/yyyy HH:mm:ss"));
 
@@ -71,9 +71,9 @@ namespace CL7Logger.Middleware
             //Try to get TraceId value from HttpRequest Header
             StringValues traceValues;
             if (httpContext.Request.Headers.TryGetValue(options.Value.TraceIdHeaderName, out traceValues) && traceValues.Count > 0)
-                options.Value.TraceId = Guid.Parse(traceValues[0]);
+                options.Value.LogginInfo.TraceId = Guid.Parse(traceValues[0]);
             else
-                options.Value.TraceId = Guid.NewGuid();
+                options.Value.LogginInfo.TraceId = Guid.NewGuid();
 
             await _next(httpContext);
         }

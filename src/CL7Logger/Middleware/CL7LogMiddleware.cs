@@ -70,7 +70,7 @@ namespace CL7Logger.Middleware
 
             //Try to get TraceId value from HttpRequest Header
             StringValues traceValues;
-            if (httpContext.Request.Headers.TryGetValue(options.Value.TraceIdHeaderName, out traceValues) && traceValues.Count > 0)
+            if (httpContext.Request.Headers.TryGetValue(options.Value.LogginInfo.TraceIdHeaderName, out traceValues) && traceValues.Count > 0)
                 options.Value.LogginInfo.TraceId = Guid.Parse(traceValues[0]);
             else
                 options.Value.LogginInfo.TraceId = Guid.NewGuid();

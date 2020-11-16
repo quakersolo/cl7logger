@@ -12,7 +12,6 @@ namespace CL7Logger
         public CL7LogginInfo LogginInfo { get; private set; }
         public string ConnectionString { get; set; }
 
-        public string TraceIdHeaderName { get; set; } = "CL7TraceId";
         public string Path { get; set; } = "/Logentries";
     }
 }

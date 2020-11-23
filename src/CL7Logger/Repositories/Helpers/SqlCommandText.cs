@@ -31,6 +31,8 @@ WHERE
 	(ApplicationName = @ApplicationName)
 	AND (@LogEntryId = '00000000-0000-0000-0000-000000000000' or Id=@LogEntryId)
 	AND (@TraceId = '00000000-0000-0000-0000-000000000000' or TraceId=@TraceId)
-	AND (@LogEntryType = -99 OR LogEntryType = @LogEntryType);";
+	AND (@LogEntryType = -99 OR LogEntryType = @LogEntryType)
+ORDER BY
+	CreatedAt desc;";
     }
 }

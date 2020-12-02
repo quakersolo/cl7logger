@@ -16,8 +16,8 @@ BEGIN
 		""TraceId"" uniqueidentifier not null,
 		""LogEntryType"" int not null,
 		""LogEntryTypeName"" varchar(50) not null,
-		""Message"" varchar(5000) not null,
-		""Detail"" varchar(5000),
+		""Message"" varchar(max) not null,
+		""Detail"" varchar(max),
 		""Host"" varchar(50),
 		""UserId"" varchar(50),
 		""CreatedAt"" datetime not null

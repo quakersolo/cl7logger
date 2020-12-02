@@ -75,6 +75,9 @@ namespace CL7Logger.Middleware
             else
                 options.Value.LogginInfo.TraceId = Guid.NewGuid();
 
+            if (!string.IsNullOrEmpty(httpContext.User.Identity.Name))
+                options.Value.LogginInfo.UserId = httpContext.User.Identity.Name;
+
             await _next(httpContext);
         }
 

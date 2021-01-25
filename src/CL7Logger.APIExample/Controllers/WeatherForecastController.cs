@@ -1,10 +1,10 @@
-﻿using CL7Logger.Transport;
+﻿using CLogger.Transport;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CL7Logger.APIExample.Controllers
+namespace CLogger.APIExample.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -14,10 +14,10 @@ namespace CL7Logger.APIExample.Controllers
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
-        private readonly ICL7LogManager logger;
+        private readonly ICLogMonitor logger;
         private readonly WeatherForecast weatherForecast;
 
-        public WeatherForecastController(ICL7LogManager logger, WeatherForecast weatherForecast)
+        public WeatherForecastController(ICLogMonitor logger, WeatherForecast weatherForecast)
         {
             this.logger = logger;
             this.weatherForecast = weatherForecast;
@@ -44,7 +44,7 @@ namespace CL7Logger.APIExample.Controllers
 
             var res = await logger.ListLogsAsync(new ListLogsParameters
             {
-                LogEntryType = CL7LogEntryType.All,
+                LogEntryType = CLogEntryType.All,
                 TraceId = new Guid("0d348b5d-7fb6-43ae-9daf-58213358c39a")
             });
 

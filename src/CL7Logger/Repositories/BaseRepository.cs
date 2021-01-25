@@ -1,10 +1,10 @@
-﻿using CL7Logger.Entities;
+﻿using CLogger.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CL7Logger.Repositories
+namespace CLogger.Repositories
 {
     internal abstract class BaseRepository<T> where T : BaseEntity
     {

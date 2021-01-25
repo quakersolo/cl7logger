@@ -1,13 +1,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CL7Logger.APIExample
+namespace CLogger.APIExample
 {
     public class WeatherForecast
     {
-        private readonly ICL7LogManager logManager;
+        private readonly ICLogMonitor logManager;
 
-        public WeatherForecast(ICL7LogManager logManager)
+        public WeatherForecast(ICLogMonitor logManager)
         {
             this.logManager = logManager;
         }

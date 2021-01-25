@@ -1,6 +1,6 @@
-﻿using CL7Logger.Common;
-using CL7Logger.Middleware.Helpers;
-using CL7Logger.Transport;
+﻿using CLogger.Common;
+using CLogger.Middleware.Helpers;
+using CLogger.Transport;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CL7Logger.Middleware
+namespace CLogger.Middleware
 {
     internal class CL7LogMiddleware
     {
@@ -20,7 +20,7 @@ namespace CL7Logger.Middleware
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext httpContext, IOptions<CL7LogOptions> options, ICL7LogManager logManager, ConnectionStringManager connectionStringManager)
+        public async Task InvokeAsync(HttpContext httpContext, IOptions<CLogOptions> options, ICLogMonitor logManager, ConnectionStringManager connectionStringManager)
         {
             if (httpContext.Request.Path.HasValue &&
                 httpContext.Request.Path.Value.ToUpper().StartsWith(options.Value.Path.ToUpper()))
@@ -44,9 +44,9 @@ namespace CL7Logger.Middleware
                 int logEntryType;
                 if (queryCollection.ContainsKey("ty") &&
                     int.TryParse(queryCollection["ty"], out logEntryType) &&
-                    Enum.IsDefined(typeof(CL7LogEntryType), logEntryType))
+                    Enum.IsDefined(typeof(CLogEntryType), logEntryType))
                 {
-                    listLogsParameters.LogEntryType = (CL7LogEntryType)logEntryType;
+                    listLogsParameters.LogEntryType = (CLogEntryType)logEntryType;
                 }
 
                 ListLogsResult listLogsResult = await logManager.ListLogsAsync(listLogsParameters);
@@ -81,7 +81,7 @@ namespace CL7Logger.Middleware
             await _next(httpContext);
         }
 
-        private string htmlTableRows(ListLogsResult listLogsResult, IOptions<CL7LogOptions> options)
+        private string htmlTableRows(ListLogsResult listLogsResult, IOptions<CLogOptions> options)
         {
             return string.Join(
                         Environment.NewLine,
@@ -101,15 +101,15 @@ namespace CL7Logger.Middleware
                         )));
         }
 
-        private string getCssLogEntry(CL7LogEntryType cL7LogEntryType)
+        private string getCssLogEntry(CLogEntryType cL7LogEntryType)
         {
             switch (cL7LogEntryType)
             {
-                case CL7LogEntryType.Information:
+                case CLogEntryType.Information:
                     return "table-info";
-                case CL7LogEntryType.Warning:
+                case CLogEntryType.Warning:
                     return "table-warning";
-                case CL7LogEntryType.Error:
+                case CLogEntryType.Error:
                     return "table-danger";
                 default:
                     return string.Empty;

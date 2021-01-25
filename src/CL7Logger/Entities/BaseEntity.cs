@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CL7Logger.Entities
+namespace CLogger.Entities
 {
     internal abstract class BaseEntity
     {

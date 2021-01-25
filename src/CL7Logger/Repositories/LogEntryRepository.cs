@@ -1,4 +1,4 @@
-﻿using CL7Logger.Entities;
+﻿using CLogger.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CL7Logger.Repositories
+namespace CLogger.Repositories
 {
     internal class LogEntryRepository : BaseRepository<LogEntry>
     {
@@ -70,7 +70,7 @@ namespace CL7Logger.Repositories
                 Id = reader.GetGuid(reader.GetOrdinal("Id")),
                 ApplicationName = reader.GetString(reader.GetOrdinal("ApplicationName")),
                 TraceId = reader.GetGuid(reader.GetOrdinal("TraceId")),
-                LogEntryType = (CL7LogEntryType)reader.GetInt32(reader.GetOrdinal("LogEntryType")),
+                LogEntryType = (CLogEntryType)reader.GetInt32(reader.GetOrdinal("LogEntryType")),
                 Message = reader.GetString(reader.GetOrdinal("Message")),
                 Detail = reader.GetString(reader.GetOrdinal("Detail")),
                 Host = reader.GetString(reader.GetOrdinal("Host")),

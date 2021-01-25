@@ -1,8 +1,8 @@
-﻿using CL7Logger.Entities;
+﻿using CLogger.Entities;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CL7Logger.Transport
+namespace CLogger.Transport
 {
     public class ListLogsResult
     {

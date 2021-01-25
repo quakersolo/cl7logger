@@ -1,11 +1,11 @@
-﻿using CL7Logger.Transport;
+﻿using CLogger.Transport;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CL7Logger
+namespace CLogger
 {
-    public interface ICL7LogManager
+    public interface ICLogMonitor
     {
         Task<Guid> AddTraceAsync(string message, CancellationToken cancellationToken = default);
         Task<Guid> AddInformationAsync(string message, CancellationToken cancellationToken = default);

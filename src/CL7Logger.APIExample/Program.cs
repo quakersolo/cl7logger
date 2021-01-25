@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace CL7Logger.APIExample
+namespace CLogger.APIExample
 {
     public class Program
     {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 
-namespace CL7Logger
+namespace CLogger
 {
-    public class CL7LogOptions
+    public class CLogOptions
     {
         public string ApplicationName { get; set; }
         public string ConnectionString { get; set; }

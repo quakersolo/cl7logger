@@ -1,21 +1,21 @@
-﻿using CL7Logger.Common;
-using CL7Logger.Middleware;
+﻿using CLogger.Common;
+using CLogger.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using System;
 
-namespace CL7Logger.Extensions
+namespace CLogger.Extensions
 {
     public static class LogManagerBuilderHelper
     {
-        public static IServiceCollection AddCL7Logger(this IServiceCollection services, Action<CL7LogOptions> setupAction)
+        public static IServiceCollection AddCL7Logger(this IServiceCollection services, Action<CLogOptions> setupAction)
         {
             var builder = services.AddSingleton<ConnectionStringManager>();
 
             builder.AddHttpContextAccessor();
-            builder.AddScoped<ICL7LogManager, CL7LogManager>();
+            builder.AddScoped<ICLogMonitor, CLogMonitor>();
             builder.Configure(setupAction);
 
             return builder;

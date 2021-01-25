@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CL7Logger.Transport
+namespace CLogger.Transport
 {
     public class ListLogsParameters
     {
         public Guid LogEntryId { get; set; } = default;
         public Guid TraceId { get; set; } = default;
-        public CL7LogEntryType LogEntryType { get; set; } = CL7LogEntryType.All;
+        public CLogEntryType LogEntryType { get; set; } = CLogEntryType.All;
 
         internal static IDictionary<string, object> ToDictionary(ListLogsParameters parameters, string applicationName)
         {

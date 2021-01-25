@@ -1,6 +1,6 @@
-﻿namespace CL7Logger
+﻿namespace CLogger
 {
-    public enum CL7LogEntryType
+    public enum CLogEntryType
     {
         Trace = 0,
         Information,

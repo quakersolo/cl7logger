@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CL7Logger.Common
+namespace CLogger.Common
 {
     internal class ConnectionStringManager
     {

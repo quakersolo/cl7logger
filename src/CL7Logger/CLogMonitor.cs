@@ -1,6 +1,6 @@
-﻿using CL7Logger.Entities;
-using CL7Logger.Repositories;
-using CL7Logger.Transport;
+﻿using CLogger.Entities;
+using CLogger.Repositories;
+using CLogger.Transport;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
@@ -9,14 +9,14 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CL7Logger
+namespace CLogger
 {
-    public class CL7LogManager : ICL7LogManager
+    public class CLogMonitor : ICLogMonitor
     {
-        private readonly IOptions<CL7LogOptions> options;
+        private readonly IOptions<CLogOptions> options;
         private readonly IHttpContextAccessor httpContextAccessor;
 
-        public CL7LogManager(IOptions<CL7LogOptions> options, IHttpContextAccessor httpContextAccessor)
+        public CLogMonitor(IOptions<CLogOptions> options, IHttpContextAccessor httpContextAccessor)
         {
             this.options = options;
             this.httpContextAccessor = httpContextAccessor;
@@ -24,17 +24,17 @@ namespace CL7Logger
 
         public Task<Guid> AddTraceAsync(string message, CancellationToken cancellationToken = default)
         {
-            return AddLogAsync(message, CL7LogEntryType.Trace, cancellationToken);
+            return AddLogAsync(message, CLogEntryType.Trace, cancellationToken);
         }
 
         public Task<Guid> AddInformationAsync(string message, CancellationToken cancellationToken = default)
         {
-            return AddLogAsync(message, CL7LogEntryType.Information, cancellationToken);
+            return AddLogAsync(message, CLogEntryType.Information, cancellationToken);
         }
 
         public Task<Guid> AddWarningAsync(string message, CancellationToken cancellationToken = default)
         {
-            return AddLogAsync(message, CL7LogEntryType.Warning, cancellationToken);
+            return AddLogAsync(message, CLogEntryType.Warning, cancellationToken);
         }
 
         public async Task<Guid> AddExceptionAsync(Exception exception, CancellationToken cancellationToken = default)
@@ -43,7 +43,7 @@ namespace CL7Logger
             {
                 ApplicationName = options.Value.ApplicationName,
                 TraceId = options.Value.TraceId,
-                LogEntryType = CL7LogEntryType.Error,
+                LogEntryType = CLogEntryType.Error,
                 Message = exception.Message,
                 Detail = JsonSerializer.Serialize(new
                 {
@@ -68,7 +68,7 @@ namespace CL7Logger
             return ListLogsResult.FromLogEntries(logEntries);
         }
 
-        private async Task<Guid> AddLogAsync(string message, CL7LogEntryType logEntryType, CancellationToken cancellationToken)
+        private async Task<Guid> AddLogAsync(string message, CLogEntryType logEntryType, CancellationToken cancellationToken)
         {
             LogEntry logEntry = new LogEntry
             {

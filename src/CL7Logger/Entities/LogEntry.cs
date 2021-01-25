@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace CL7Logger.Entities
+namespace CLogger.Entities
 {
     internal class LogEntry : BaseEntity
     {
         public string ApplicationName { get; set; }
         public Guid TraceId { get; set; }
-        public CL7LogEntryType LogEntryType { get; set; }
+        public CLogEntryType LogEntryType { get; set; }
         public string Message { get; set; }
         public string Detail { get; set; }
         public string Host { get; set; }

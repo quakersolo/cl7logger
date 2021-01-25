@@ -1,9 +1,9 @@
-﻿using CL7Logger.Repositories.Helpers;
+﻿using CLogger.Repositories.Helpers;
 using System.Data.SqlClient;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CL7Logger.Common
+namespace CLogger.Common
 {
     internal class DatabaseManager
     {

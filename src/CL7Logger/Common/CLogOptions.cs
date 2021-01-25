@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using CL7Logger.Common;
 
 namespace CLogger
 {
     public class CLogOptions
     {
-        public string ApplicationName { get; set; }
-        public string ConnectionString { get; set; }
-        public Guid TraceId { get; set; }
+        public CLogOptions()
+        {
+            LogginInfo = new CLogInfo();
+        }
 
-        public string TraceIdHeaderName { get; set; } = "CL7TraceId";
-        public string Path { get; set; } = "/Logentries";
+        public CLogInfo LogginInfo { get; private set; }
+        public string ConnectionString { get; set; }
+
+        public string Path { get; set; } = "/log";
     }
 }

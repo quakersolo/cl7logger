@@ -13,12 +13,12 @@ namespace CLogger
 {
     public class CLogMonitor : ICLogMonitor
     {
-        private readonly IOptions<CLogOptions> options;
+        private readonly CLogOptions options;
         private readonly IHttpContextAccessor httpContextAccessor;
 
         public CLogMonitor(IOptions<CLogOptions> options, IHttpContextAccessor httpContextAccessor)
         {
-            this.options = options;
+            this.options = options.Value;
             this.httpContextAccessor = httpContextAccessor;
         }
 
@@ -41,8 +41,8 @@ namespace CLogger
         {
             LogEntry logEntry = new LogEntry
             {
-                ApplicationName = options.Value.ApplicationName,
-                TraceId = options.Value.TraceId,
+                ApplicationName = options.LogginInfo.ApplicationName,
+                TraceId = options.LogginInfo.TraceId,
                 LogEntryType = CLogEntryType.Error,
                 Message = exception.Message,
                 Detail = JsonSerializer.Serialize(new
@@ -55,15 +55,15 @@ namespace CLogger
                 CreatedAt = DateTime.UtcNow,
             };
 
-            LogEntryRepository logEntryRepository = new LogEntryRepository(options.Value.ConnectionString);
+            LogEntryRepository logEntryRepository = new LogEntryRepository(options.ConnectionString);
             return await logEntryRepository.AddAsync(logEntry, cancellationToken);
         }
 
         public async Task<ListLogsResult> ListLogsAsync(ListLogsParameters parameters, CancellationToken cancellationToken = default)
         {
-            LogEntryRepository logEntryRepository = new LogEntryRepository(options.Value.ConnectionString);
+            LogEntryRepository logEntryRepository = new LogEntryRepository(options.ConnectionString);
 
-            IEnumerable<LogEntry> logEntries = await logEntryRepository.ListAsync(ListLogsParameters.ToDictionary(parameters, options.Value.ApplicationName), cancellationToken);
+            IEnumerable<LogEntry> logEntries = await logEntryRepository.ListAsync(ListLogsParameters.ToDictionary(parameters, options.LogginInfo.ApplicationName), cancellationToken);
 
             return ListLogsResult.FromLogEntries(logEntries);
         }
@@ -72,17 +72,17 @@ namespace CLogger
         {
             LogEntry logEntry = new LogEntry
             {
-                ApplicationName = options.Value.ApplicationName,
-                TraceId = options.Value.TraceId,
+                ApplicationName = options.LogginInfo.ApplicationName,
+                TraceId = options.LogginInfo.TraceId,
                 LogEntryType = logEntryType,
                 Message = message,
                 Detail = JsonSerializer.Serialize(new { }),
                 Host = httpContextAccessor.HttpContext?.Request.Host.Host ?? string.Empty,
-                UserId = httpContextAccessor.HttpContext?.User.Identity.Name ?? string.Empty,
+                UserId = options.LogginInfo.UserId ?? string.Empty,
                 CreatedAt = DateTime.UtcNow,
             };
 
-            LogEntryRepository logEntryRepository = new LogEntryRepository(options.Value.ConnectionString);
+            LogEntryRepository logEntryRepository = new LogEntryRepository(options.ConnectionString);
             return await logEntryRepository.AddAsync(logEntry, cancellationToken);
         }
     }
